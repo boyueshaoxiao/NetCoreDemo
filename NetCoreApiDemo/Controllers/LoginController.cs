@@ -21,7 +21,8 @@ namespace NetCoreApiDemo.Controllers
     /// 首页
     /// </summary>
     [Route("api/login/[action]")]
-    public class LoginController : BaseController
+    [ApiController]
+    public class LoginController : ControllerBase
     {
         /// <summary>
         /// 登录获取Token
@@ -60,7 +61,6 @@ namespace NetCoreApiDemo.Controllers
             var tokenHeader = HttpContext.Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
             var tokenRes = JwtHelper.ValidateJwt(tokenHeader);
             return Ok(tokenRes.Item2);
-
         }
     }
 }

@@ -29,7 +29,7 @@ namespace NetCoreApiDemo
             }
             catch (Exception e)
             {
-                logger.Debug("CreateHostBuilder Running Fail£¡", e.Message);
+                logger.Debug($"CreateHostBuilder Running Fail£¡{e.Message}");
             }
             finally
             {

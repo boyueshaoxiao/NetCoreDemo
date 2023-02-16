@@ -19,7 +19,8 @@ namespace NetCoreApiDemo.Controllers
     /// 测试API
     /// </summary>
     [Route("api/test/[action]")]
-    public class TestController : BaseController
+    [ApiController]
+    public class TestController : ControllerBase
     {
         private readonly ILogger<TestController> _logger;
         private readonly OperationModel _options;
@@ -169,7 +170,6 @@ namespace NetCoreApiDemo.Controllers
             return $"DbType:{AppConfig.DbType},SqlConnStr:{AppConfig.SqlConnStr}";
         }
 
-
         /// <summary>
         /// 依赖注入作用域
         /// </summary>
@@ -220,8 +220,6 @@ namespace NetCoreApiDemo.Controllers
 
             return "TestServiceScope";
         }
-
-
 
         /// <summary>
         /// POST

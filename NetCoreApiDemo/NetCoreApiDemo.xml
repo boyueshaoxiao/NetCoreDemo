@@ -4,11 +4,6 @@
         <name>NetCoreApiDemo</name>
     </assembly>
     <members>
-        <member name="T:NetCoreApiDemo.Controllers.BaseController">
-            <summary>
-            Base
-            </summary>
-        </member>
         <member name="T:NetCoreApiDemo.Controllers.LoginController">
             <summary>
             首页
@@ -175,6 +170,21 @@
         <member name="F:NetCoreApiDemo.Enumeration.DbType.PostGreSql">
             <summary>
             PostGreSQL
+            </summary>
+        </member>
+        <member name="T:NetCoreApiDemo.Enumeration.JwtClaimKey">
+            <summary>
+            Jwt Claim Key
+            </summary>
+        </member>
+        <member name="F:NetCoreApiDemo.Enumeration.JwtClaimKey.UserId">
+            <summary>
+            userId
+            </summary>
+        </member>
+        <member name="F:NetCoreApiDemo.Enumeration.JwtClaimKey.UserName">
+            <summary>
+            userName
             </summary>
         </member>
         <member name="T:NetCoreApiDemo.Extensions.DateTimeExtension">

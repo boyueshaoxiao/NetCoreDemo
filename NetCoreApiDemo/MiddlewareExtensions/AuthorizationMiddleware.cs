@@ -9,7 +9,6 @@
 
 using System;
 using System.Text;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
@@ -55,38 +54,39 @@ namespace NetCoreApiDemo.MiddlewareExtensions
                         ClockSkew = TimeSpan.Zero
                     };
 
+                    // 默认有www-authenticate响应头提示验证失败信息
                     // 添加验证事件监听
-                    o.Events = new JwtBearerEvents
-                    {
-                        // token验证失败时将失败信息返回到响应头中
-                        OnAuthenticationFailed = context =>
-                        {
-                            string tokenErrMsg;
-                            if (context.Exception.GetType() == typeof(SecurityTokenExpiredException))
-                            {
-                                // 过期
-                                tokenErrMsg = "Expired";
-                            }
-                            else if (context.Exception.GetType() == typeof(SecurityTokenNoExpirationException))
-                            {
-                                // 未设置过期时间
-                                tokenErrMsg = "Expiration time is not set";
-                            }
-                            else if (context.Exception.GetType() == typeof(SecurityTokenException))
-                            {
-                                // token无效
-                                tokenErrMsg = "signature invalid";
-                            }
-                            else
-                            {
-                                // 解析失败
-                                tokenErrMsg = "Identify failed";
-                            }
+                    //o.Events = new JwtBearerEvents
+                    //{
+                    //    // token验证失败时将失败信息返回到响应头中
+                    //    OnAuthenticationFailed = context =>
+                    //    {
+                    //        string tokenErrMsg;
+                    //        if (context.Exception.GetType() == typeof(SecurityTokenExpiredException))
+                    //        {
+                    //            // 过期
+                    //            tokenErrMsg = "Expired";
+                    //        }
+                    //        else if (context.Exception.GetType() == typeof(SecurityTokenNoExpirationException))
+                    //        {
+                    //            // 未设置过期时间
+                    //            tokenErrMsg = "Expiration time is not set";
+                    //        }
+                    //        else if (context.Exception.GetType() == typeof(SecurityTokenException))
+                    //        {
+                    //            // token无效
+                    //            tokenErrMsg = "signature invalid";
+                    //        }
+                    //        else
+                    //        {
+                    //            // 解析失败
+                    //            tokenErrMsg = "Identify failed";
+                    //        }
 
-                            context.Response.Headers.Add("Token-Error", tokenErrMsg);
-                            return Task.CompletedTask;
-                        }
-                    };
+                    //        context.Response.Headers.Add("Token-Error", tokenErrMsg);
+                    //        return Task.CompletedTask;
+                    //    }
+                    //};
                 });
 
             // 如果需要角色控制到Action则需要配置Policy

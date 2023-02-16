@@ -62,4 +62,19 @@
         PostGreSql = 4
     }
 
+    /// <summary>
+    /// Jwt Claim Key
+    /// </summary>
+    public class JwtClaimKey
+    {
+        /// <summary>
+        /// userId
+        /// </summary>
+        public static string UserId = "userId";
+
+        /// <summary>
+        /// userName
+        /// </summary>
+        public static string UserName = "userName";
+    }
 }
