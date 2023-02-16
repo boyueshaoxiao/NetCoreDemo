@@ -39,48 +39,64 @@ namespace NetCoreApiDemo.MiddlewareExtensions
                 // 添加JwtBearer服务
                 .AddJwtBearer(o =>
                 {
-                    // 令牌验证参数
+                    // token验证参数
                     o.TokenValidationParameters = new TokenValidationParameters
                     {
-                        // 设置生成token的秘钥
-                        //IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(AppConfig.SecretKey)),
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(AppConfig.SecretKey)),
                         // 验证秘钥
                         ValidateIssuerSigningKey = true,
-                        // 验证发布者
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(AppConfig.SecretKey)),
+                        // 验证颁发者
                         ValidateIssuer = true,
-                        // 验证Issure
-                        ValidIssuer = AppConfig.Issuer,//发行人
-                        // 验证接收者
+                        ValidIssuer = AppConfig.Issuer,
+                        // 验证订阅者
                         ValidateAudience = true,
-                        // 读配置Audience
-                        ValidAudience = AppConfig.Audience,//订阅人
-                        // 验证过期时间
-                        ValidateLifetime = true,
-                        ClockSkew = TimeSpan.FromSeconds(30),
-                        RequireExpirationTime = true
+                        ValidAudience = AppConfig.Audience,
+                        // 验证过期时间必须设置该属性
+                        ClockSkew = TimeSpan.Zero
                     };
 
+                    // 添加验证事件监听
                     o.Events = new JwtBearerEvents
                     {
+                        // token验证失败时将失败信息返回到响应头中
                         OnAuthenticationFailed = context =>
                         {
-                            // 如果过期，则把<是否过期>添加到，返回头信息中
+                            string tokenErrMsg;
                             if (context.Exception.GetType() == typeof(SecurityTokenExpiredException))
                             {
-                                context.Response.Headers.Add("Token-Expired", "true");
+                                // 过期
+                                tokenErrMsg = "Expired";
+                            }
+                            else if (context.Exception.GetType() == typeof(SecurityTokenNoExpirationException))
+                            {
+                                // 未设置过期时间
+                                tokenErrMsg = "Expiration time is not set";
+                            }
+                            else if (context.Exception.GetType() == typeof(SecurityTokenException))
+                            {
+                                // token无效
+                                tokenErrMsg = "signature invalid";
+                            }
+                            else
+                            {
+                                // 解析失败
+                                tokenErrMsg = "Identify failed";
                             }
 
+                            context.Response.Headers.Add("Token-Error", tokenErrMsg);
                             return Task.CompletedTask;
                         }
                     };
                 });
 
+            // 如果需要角色控制到Action则需要配置Policy
+            // 如果没有配置AddPolicy，接口直接使用[Authorize]特性即可
+            // 如果接口只允许Admin或System角色的Token访问，则需要添加了[Authorize("SystemOrAdmin")]特性
+            // 详细请测试LoginController的ParseToken的方法
             services.AddAuthorization(options =>
             {
-                options.AddPolicy("User", policy => policy.RequireRole("User").Build());
+                options.AddPolicy("User", policy => policy.RequireRole("User"));
                 options.AddPolicy("SystemOrAdmin", policy => policy.RequireRole("Admin", "System"));
-
             });
         }
     }

@@ -113,7 +113,7 @@ namespace NetCoreApiDemo.Controllers
         {
             _logger.LogInformation("GetCookie");
             //return $"Session:{SessionHelper.Get<List<UserModel>>(key)[0].UserBirthDay},Cookie:{CookieHelper.Get(key)}";
-            var session = await Task.Run(() => SessionHelper.Get<List<UserModel>>(key));
+            var session = await Task.Run(() => SessionHelper.Get<List<RoleModel>>(key));
             return HttpResponseResult.Success(session);
         }
 
@@ -131,14 +131,12 @@ namespace NetCoreApiDemo.Controllers
                 new UserModel
                 {
                     UserId = Guid.NewGuid().ToString(),
-                    UserName = "Dennis",
-                    UserBirthDay = DateTime.Now
+                    UserName = "Dennis"
                 },
                 new UserModel
                 {
                     UserId = Guid.NewGuid().ToString(),
-                    UserName = "Roger",
-                    UserBirthDay = DateTime.Now
+                    UserName = "Roger"
                 }
             };
 
@@ -230,7 +228,7 @@ namespace NetCoreApiDemo.Controllers
         /// </summary>
         /// <param name="value"></param>
         [HttpPost]
-        public UserModel Post([FromBody] UserModel value)
+        public RoleModel Post([FromBody] RoleModel value)
         {
             return value;
         }

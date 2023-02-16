@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace NetCoreApiDemo.Models
 {
     /// <summary>
-    /// 用户信息
+    /// Jwt Token Payload
     /// </summary>
-    public class UserModel
+    public class JwtTokenPayload
     {
         /// <summary>
         /// UserId
@@ -17,5 +16,10 @@ namespace NetCoreApiDemo.Models
         /// UserName
         /// </summary>
         public string UserName { get; set; }
+
+        /// <summary>
+        /// UserRoles
+        /// </summary>
+        public IEnumerable<string> UserRoles { get; set; }
     }
 }

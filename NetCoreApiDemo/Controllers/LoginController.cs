@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Mvc;
 using NetCoreApiDemo.Extensions;
 using NetCoreApiDemo.Helpers;
 using NetCoreApiDemo.Models;
+using Newtonsoft.Json;
 
 namespace NetCoreApiDemo.Controllers
 {
@@ -27,28 +28,23 @@ namespace NetCoreApiDemo.Controllers
         /// </summary>
         /// <param name="role"></param>
         /// <returns></returns>
-        [HttpGet]
-        public IActionResult Login(string role)
+        [HttpPost]
+        public IActionResult Login([FromBody] RoleModel role)
         {
             string token;
-            var result = false;
-            if (role.NotNull())
+            if (role.UserRoles.Null())
             {
-                token = JWTHelper.IssueJwt(new UserModel
-                {
-                    UserId = Guid.NewGuid().ToString(), 
-                    UserRole = role, 
-                    UserName = role,
-                    UserBirthDay = DateTime.Now
-                });
-                result = true;
-            }
-            else
-            {
-                token = " Login Fail.";
+                token = "参数UserRoles为null";
+                return BadRequest(new { Error = token });
             }
 
-            return Ok(new { Status = result, Token = token });
+            var payLoad = new JwtTokenPayload
+            {
+                UserId = Guid.NewGuid().ToString(),
+                UserName = "Dennis"
+            };
+            token = JwtHelper.GenerateJwt(role.UserRoles, payLoad);
+            return Ok(new { Token = token });
         }
 
         /// <summary>
@@ -56,16 +52,14 @@ namespace NetCoreApiDemo.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        //该接口限制只有System 或 Admin 角色的Token可以访问
-        [Authorize("SystemOrAdmin")]
-        //如果中间件中没有配置AddPolicy，直接使用Authorize即可
-        //[Authorize]
+        //[Authorize("SystemOrAdmin")]
+        [Authorize]
         public IActionResult ParseToken()
         {
             //需要截取Bearer 
             var tokenHeader = HttpContext.Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
-            var user = JWTHelper.SerializeJwt(tokenHeader);
-            return Ok(user);
+            var tokenRes = JwtHelper.ValidateJwt(tokenHeader);
+            return Ok(tokenRes.Item2);
 
         }
     }

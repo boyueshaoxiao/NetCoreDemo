@@ -14,7 +14,7 @@
             首页
             </summary>
         </member>
-        <member name="M:NetCoreApiDemo.Controllers.LoginController.Login(System.String)">
+        <member name="M:NetCoreApiDemo.Controllers.LoginController.Login(NetCoreApiDemo.Models.RoleModel)">
             <summary>
             登录获取Token
             </summary>
@@ -99,7 +99,7 @@
             <param name="testTransient1"></param>
             <returns></returns>
         </member>
-        <member name="M:NetCoreApiDemo.Controllers.TestController.Post(NetCoreApiDemo.Models.UserModel)">
+        <member name="M:NetCoreApiDemo.Controllers.TestController.Post(NetCoreApiDemo.Models.RoleModel)">
             <summary>
             POST
             </summary>
@@ -364,23 +364,24 @@
             HttpContext上下文
             </summary>
         </member>
-        <member name="T:NetCoreApiDemo.Helpers.JWTHelper">
+        <member name="T:NetCoreApiDemo.Helpers.JwtHelper">
             <summary>
             JWT 帮助类
             </summary>
         </member>
-        <member name="M:NetCoreApiDemo.Helpers.JWTHelper.IssueJwt(NetCoreApiDemo.Models.UserModel)">
+        <member name="M:NetCoreApiDemo.Helpers.JwtHelper.GenerateJwt(System.Collections.Generic.IEnumerable{System.String},NetCoreApiDemo.Models.JwtTokenPayload)">
             <summary>
             颁发JWT字符串
             </summary>
-            <param name="tokenModel"></param>
+            <param name="userRoles"></param>
+            <param name="payload"></param>
             <returns></returns>
         </member>
-        <member name="M:NetCoreApiDemo.Helpers.JWTHelper.SerializeJwt(System.String)">
+        <member name="M:NetCoreApiDemo.Helpers.JwtHelper.ValidateJwt(System.String)">
             <summary>
             解析
             </summary>
-            <param name="jwtStr"></param>
+            <param name="jwtToken"></param>
             <returns></returns>
         </member>
         <member name="T:NetCoreApiDemo.Helpers.SessionHelper">
@@ -542,6 +543,26 @@
             </summary>
             <param name="services"></param>
         </member>
+        <member name="T:NetCoreApiDemo.Models.JwtTokenPayload">
+            <summary>
+            Jwt Token Payload
+            </summary>
+        </member>
+        <member name="P:NetCoreApiDemo.Models.JwtTokenPayload.UserId">
+            <summary>
+            UserId
+            </summary>
+        </member>
+        <member name="P:NetCoreApiDemo.Models.JwtTokenPayload.UserName">
+            <summary>
+            UserName
+            </summary>
+        </member>
+        <member name="P:NetCoreApiDemo.Models.JwtTokenPayload.UserRoles">
+            <summary>
+            UserRoles
+            </summary>
+        </member>
         <member name="T:NetCoreApiDemo.Models.OperationModel">
             <summary>
             Options 操作Model
@@ -567,9 +588,19 @@
             Name
             </summary>
         </member>
+        <member name="T:NetCoreApiDemo.Models.RoleModel">
+            <summary>
+            用户角色
+            </summary>
+        </member>
+        <member name="P:NetCoreApiDemo.Models.RoleModel.UserRoles">
+            <summary>
+            角色
+            </summary>
+        </member>
         <member name="T:NetCoreApiDemo.Models.UserModel">
             <summary>
-            用户Model
+            用户信息
             </summary>
         </member>
         <member name="P:NetCoreApiDemo.Models.UserModel.UserId">
@@ -577,19 +608,9 @@
             UserId
             </summary>
         </member>
-        <member name="P:NetCoreApiDemo.Models.UserModel.UserRole">
-            <summary>
-            角色
-            </summary>
-        </member>
         <member name="P:NetCoreApiDemo.Models.UserModel.UserName">
             <summary>
-            姓名
-            </summary>
-        </member>
-        <member name="P:NetCoreApiDemo.Models.UserModel.UserBirthDay">
-            <summary>
-            生日
+            UserName
             </summary>
         </member>
         <member name="T:NetCoreApiDemo.Program">
